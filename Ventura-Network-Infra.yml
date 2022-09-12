@@ -1,0 +1,44 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: "This template provisions the Ventura Prod Network Infrastructure"
+Metadata: {}
+
+Parameters: 
+  VenturaProdVPCCidrBlockPara: 
+    Description: Please provide the Cidr Block for the VenturaProdVPC
+    Type: String
+    Default: 10.0.0.0/16
+  
+  VenturaProdNATalbSN1azPara:
+    Description: Please provide an AvailabilityZone for the VenturaProdNATalbSN1
+    Type: AWS::EC2::AvailabilityZone::Name
+
+  VenturaProdNATalbSN1CidrBlockPara :
+    Description: Please provide a Cidr Block for Ventura VenturaProdNATalbSN1
+    Type: String
+    
+Mappings: {}
+
+Conditions: {}
+
+Resources:
+  VenturaProdVPC:
+  Type: AWS::EC2::VPC
+  Properties:
+    CidrBlock: !Ref VenturaProdVPCCidrBlockPara
+    EnableDnsSupport: true
+    Tags:
+      - Key: Name
+        Value: VenturaProdVPC
+  # Ventura Prod ALB/NAT Gateway 1 Public Subnet 1
+  VenturaProdNATalbSN1: 
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: !Ref VenturaProdNATalbSN1azPara
+      VpcId: !Ref VenturaProdVPC
+      CidrBlock: !Ref VenturaProdNATalbSN1CidrBlockPara 
+      Tags:
+        - Key: Name
+          Value: VenturaProdNATalbSN1
+  
+
+Outputs: {}
